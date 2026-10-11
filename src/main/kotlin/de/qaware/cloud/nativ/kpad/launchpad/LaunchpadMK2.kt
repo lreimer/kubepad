@@ -123,7 +123,7 @@ open class LaunchpadMK2 @Inject constructor(private val transmitter: Transmitter
      */
     @PreDestroy
     open fun reset(@Observes @LaunchpadEvent.Reset event: LaunchpadEvent) {
-        Button.values().forEach { it.off(receiver) }
+        Button.entries.forEach { it.off(receiver) }
 
         IntRange(0, 7).forEach { r ->
             IntRange(0, 7).forEach { c ->
@@ -212,7 +212,7 @@ open class LaunchpadMK2 @Inject constructor(private val transmitter: Transmitter
              * @param id the ID
              * @return the button if found
              */
-            fun find(command: Int, id: Int) = values().find { it.command == command && it.id == id }
+            fun find(command: Int, id: Int) = entries.find { it.command == command && it.id == id }
 
             /**
              * Get one of the top buttons by index.
@@ -220,7 +220,7 @@ open class LaunchpadMK2 @Inject constructor(private val transmitter: Transmitter
              * @param index the index between 0..7
              * @return a button
              */
-            fun top(index: Int) = values()[index]
+            fun top(index: Int) = entries[index]
 
             /**
              * Get one of the right buttons by index.
@@ -228,7 +228,7 @@ open class LaunchpadMK2 @Inject constructor(private val transmitter: Transmitter
              * @param index the index between 0..7
              * @return a button
              */
-            fun right(index: Int) = values()[index + 8]
+            fun right(index: Int) = entries[index + 8]
         }
     }
 

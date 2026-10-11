@@ -29,10 +29,10 @@ import javax.inject.Qualifier
 /**
  * The data class for any trigger event we send to the Launchpad.
  */
-data class LaunchpadEvent constructor(val switch: Switch?,
-                                      val switchable: LaunchpadMK2.Switchable?,
-                                      val text: String?,
-                                      val color: Color) {
+data class LaunchpadEvent(val switch: Switch?,
+                          val switchable: LaunchpadMK2.Switchable?,
+                          val text: String?,
+                          val color: Color) {
 
     constructor(switch: Switch, switchable: LaunchpadMK2.Switchable?, color: Color = Color.NONE) : this(switch, switchable, null, color)
 

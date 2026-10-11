@@ -43,20 +43,20 @@ class MidiSystemProducer {
     @Produces
     @Default
     fun transmitter(): Transmitter {
-        if ("true".equals(System.getProperty("transmitter.disabled"), true)) {
-            return LoggingTransmitter(LoggerFactory.getLogger(LoggingTransmitter::class.java))
+        return if ("true".equals(System.getProperty("transmitter.disabled"), true)) {
+            LoggingTransmitter(LoggerFactory.getLogger(LoggingTransmitter::class.java))
         } else {
-            return MidiSystem.getTransmitter()
+            MidiSystem.getTransmitter()
         }
     }
 
     @Produces
     @Default
     fun receiver(): Receiver {
-        if ("true".equals(System.getProperty("receiver.disabled"), true)) {
-            return LoggingReceiver(LoggerFactory.getLogger(LoggingTransmitter::class.java))
+        return if ("true".equals(System.getProperty("receiver.disabled"), true)) {
+            LoggingReceiver(LoggerFactory.getLogger(LoggingTransmitter::class.java))
         } else {
-            return MidiSystem.getReceiver()
+            MidiSystem.getReceiver()
         }
     }
 

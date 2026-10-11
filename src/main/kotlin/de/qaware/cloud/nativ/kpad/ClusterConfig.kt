@@ -33,5 +33,5 @@ import javax.enterprise.context.ApplicationScoped
 open class ClusterConfig : PropertyFileConfig {
     override fun getPropertyFileName(): String? = "cluster.properties"
 
-    override fun isOptional(): Boolean = false;
+    override fun isOptional(): Boolean = false
 }

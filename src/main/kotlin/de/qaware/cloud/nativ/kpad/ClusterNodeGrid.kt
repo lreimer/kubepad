@@ -34,6 +34,7 @@ import javax.enterprise.event.Observes
 import javax.enterprise.util.AnnotationLiteral
 import javax.inject.Inject
 import javax.inject.Named
+import kotlin.math.min
 
 /**
  * The grid of 8x8 of the cloud nodes.
@@ -52,7 +53,7 @@ open class ClusterNodeGrid @Inject constructor(@Named("default")
             mutableListOf<ClusterNode>(), mutableListOf<ClusterNode>(),
             mutableListOf<ClusterNode>(), mutableListOf<ClusterNode>())
 
-    private val colors = Array(8, { i -> LaunchpadMK2.Color.values()[i + 1] })
+    private val colors = Array(8) { i -> LaunchpadMK2.Color.entries[i + 1] }
 
     /**
      * Initialize the cloud node grid.
@@ -143,7 +144,7 @@ open class ClusterNodeGrid @Inject constructor(@Named("default")
                 stopped(node)
             }
         } else if (active.count() < replicas) { // scale up, start nodes and update display
-            0.until(replicas - active.count()).forEach {
+            repeat(0.until(replicas - active.count()).count()) {
                 val node = grid[row].first { !it.active.get() }
                 // node.activate().update(ClusterNode.Phase.Pending)
                 // starting(node)
@@ -157,11 +158,11 @@ open class ClusterNodeGrid @Inject constructor(@Named("default")
         logger.info("Reloading all apps.")
         if (initialized) {
             grid.forEach {
-                it.forEach {
-                    it.deactivate()
+                it.forEach { node ->
+                    node.deactivate()
                 }
             }
-            colors.indices.forEach { colors[it] = LaunchpadMK2.Color.values()[it + 1] }
+            colors.indices.forEach { colors[it] = LaunchpadMK2.Color.entries.toTypedArray()[it + 1] }
             cluster.reset()
         }
     }
@@ -196,7 +197,7 @@ open class ClusterNodeGrid @Inject constructor(@Named("default")
             }
 
             ClusterAppEvent.Type.DELETED -> {
-                colors[event.index] = LaunchpadMK2.Color.values()[event.index + 1]
+                colors[event.index] = LaunchpadMK2.Color.entries.toTypedArray()[event.index + 1]
                 stopped(ClusterNode(event.index, 8))
                 0.until(8).forEach {
                     val node = nodes[it]
@@ -210,7 +211,7 @@ open class ClusterNodeGrid @Inject constructor(@Named("default")
             ClusterAppEvent.Type.SCALED_UP -> {
                 val nonRunning = nodes.filter { !it.active.get() }
                 val toStart = event.replicas - (nodes.size - nonRunning.size)
-                val range = 0..Math.min(toStart - 1, nonRunning.size - 1)
+                val range = 0..min(toStart - 1, nonRunning.size - 1)
                 range.forEach {
                     val node = nonRunning[it]
                     // node.activate().update(ClusterNode.Phase.Pending)

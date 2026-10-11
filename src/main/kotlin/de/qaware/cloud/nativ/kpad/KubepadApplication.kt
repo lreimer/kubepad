@@ -95,7 +95,7 @@ fun main(args: Array<String>) {
     }
 
     // ensure we shutdown nicely on exit
-    Runtime.getRuntime().addShutdownHook(Thread() {
+    Runtime.getRuntime().addShutdownHook(Thread {
         launchpad.reset(LaunchpadEvent.reset())
         cdiContainer.shutdown()
     })
