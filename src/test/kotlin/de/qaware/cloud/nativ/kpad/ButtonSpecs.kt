@@ -23,48 +23,36 @@
  */
 package de.qaware.cloud.nativ.kpad
 
-import org.jetbrains.spek.api.Spek
+import org.junit.Test
 import kotlin.test.assertEquals
 import de.qaware.cloud.nativ.kpad.launchpad.LaunchpadMK2
 
 /**
- * A Kotlin Spek test for the round Button enum.
+ * A Kotlin test for the round Button enum.
  */
-class ButtonSpecs : Spek({
-    given("a round button command and ID") {
-        on("finding the Mixer button") {
-            val mixer = LaunchpadMK2.Button.find(176, 111)
-            it("the Mixer should be found") {
-                assertEquals(LaunchpadMK2.Button.MIXER, mixer)
-            }
-        }
+class ButtonSpecs {
+    @Test
+    fun findMixerByCommandAndId() {
+        assertEquals(LaunchpadMK2.Button.MIXER, LaunchpadMK2.Button.find(176, 111))
     }
-    given ("a top round button index") {
-        on("getting the top Session button by index") {
-            val button = LaunchpadMK2.Button.top(4)
-            it("should get the Session button") {
-                assertEquals(LaunchpadMK2.Button.SESSION, button)
-            }
-        }
-        on("getting the top MIXER button by index") {
-            val button = LaunchpadMK2.Button.top(7)
-            it("should get the Session button") {
-                assertEquals(LaunchpadMK2.Button.MIXER, button)
-            }
-        }
+
+    @Test
+    fun getSessionByTopIndex() {
+        assertEquals(LaunchpadMK2.Button.SESSION, LaunchpadMK2.Button.top(4))
     }
-    given ("a right round button index") {
-        on("getting the Volume button by index") {
-            val button = LaunchpadMK2.Button.right(7)
-            it("should get the Volume button") {
-                assertEquals(LaunchpadMK2.Button.VOLUME, button)
-            }
-        }
-        on("getting the Record button by index") {
-            val button = LaunchpadMK2.Button.right(0)
-            it("should get the Record button") {
-                assertEquals(LaunchpadMK2.Button.RECORD, button)
-            }
-        }
+
+    @Test
+    fun getMixerByTopIndex() {
+        assertEquals(LaunchpadMK2.Button.MIXER, LaunchpadMK2.Button.top(7))
     }
-})
+
+    @Test
+    fun getVolumeByRightIndex() {
+        assertEquals(LaunchpadMK2.Button.VOLUME, LaunchpadMK2.Button.right(7))
+    }
+
+    @Test
+    fun getRecordByRightIndex() {
+        assertEquals(LaunchpadMK2.Button.RECORD, LaunchpadMK2.Button.right(0))
+    }
+}

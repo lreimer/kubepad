@@ -1,38 +1,20 @@
-buildscript {
-    ext {
-        kotlinVersion = '1.2.40'
-        slf4jVersion = '1.7.20'
-        spekVersion = '1.0.25'
-    }
-    repositories {
-        jcenter()
-        mavenCentral()
-        maven {
-            url "http://repository.jetbrains.com/all"
-        }
-    }
-    dependencies {
-        classpath "nl.javadude.gradle.plugins:license-gradle-plugin:0.11.0"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-    }
+plugins {
+    id 'application'
+    id 'org.jetbrains.kotlin.jvm' version '2.4.21'
+    id 'groovy'
+    id 'com.github.hierynomus.license' version '0.16.1'
+}
+
+ext {
+    slf4jVersion = '1.7.20'
 }
 
 repositories {
     flatDir {
         dirs 'lib'
     }
-    jcenter()
     mavenCentral()
-    maven {
-        url "http://repository.jetbrains.com/all"
-    }
 }
-
-apply plugin: 'application'
-apply plugin: 'kotlin'
-apply plugin: 'java'
-apply plugin: 'groovy'
-apply plugin: "com.github.hierynomus.license"
 
 license {
     skipExistingHeaders = true
@@ -48,71 +30,63 @@ license {
 group = 'de.qaware.cloud.nativ.kpad'
 version = '1.3.1'
 
-mainClassName = 'de.qaware.cloud.nativ.kpad.KubepadApplication'
-applicationDefaultJvmArgs = ['-Djava.library.path=../lib']
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
-
-    compile 'io.fabric8:kubernetes-api:3.0.12'
-    compile 'io.fabric8:kubernetes-model:4.6.1'
-    compile 'io.fabric8:kubernetes-client:4.6.1'
-    compile 'io.fabric8:openshift-client:4.6.1'
-
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-
-    compile 'com.moandjiezana.toml:toml4j:0.7.1'
-
-    compile ':LeapJava:2.3.1'
-
-    compile "org.slf4j:slf4j-api:$slf4jVersion"
-    compile 'org.apache.deltaspike.cdictrl:deltaspike-cdictrl-api:1.5.4'
-    compile 'org.apache.deltaspike.core:deltaspike-core-api:1.5.4'
-    compile 'javax.enterprise:cdi-api:2.0-EDR1'
-
-    runtime "org.slf4j:jcl-over-slf4j:$slf4jVersion"
-    runtime "org.slf4j:jul-to-slf4j:$slf4jVersion"
-    runtime 'org.apache.logging.log4j:log4j-slf4j-impl:2.5'
-    runtime 'org.apache.logging.log4j:log4j-core:2.5'
-    runtime 'org.apache.deltaspike.cdictrl:deltaspike-cdictrl-weld:1.5.4'
-    runtime 'org.apache.deltaspike.core:deltaspike-core-impl:1.5.4'
-    runtime 'org.jboss.weld.se:weld-se-core:2.3.3.Final'
-    runtime 'org.jboss:jandex:2.0.2.Final'
-
-    testCompile 'junit:junit:4.12'
-    testCompile "com.github.tomakehurst:wiremock:2.1.9"
-    testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
-    testCompile 'org.hamcrest:hamcrest-library:1.3'
-    testRuntime 'cglib:cglib-nodep:3.1'
-    testRuntime 'org.objenesis:objenesis:2.1'
-    testCompile "org.jetbrains.spek:spek:$spekVersion"
+application {
+    mainClass = 'de.qaware.cloud.nativ.kpad.KubepadApplication'
+    applicationDefaultJvmArgs = ['-Djava.library.path=../lib']
 }
 
-sourceSets {
-    test {
-        // if you truly want to override the defaults
-        output.resourcesDir = 'build/classes/test'
-    }
-    main {
-        // if you truly want to override the defaults
-        output.resourcesDir = 'build/classes/main'
-    }
+kotlin {
+    jvmToolchain(21)
+}
+
+dependencies {
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib'
+    implementation 'org.jetbrains.kotlin:kotlin-reflect'
+
+    implementation 'io.fabric8:kubernetes-api:3.0.12'
+    implementation 'io.fabric8:kubernetes-model:4.6.1'
+    implementation 'io.fabric8:kubernetes-client:4.6.1'
+    implementation 'io.fabric8:openshift-client:4.6.1'
+
+    implementation 'com.squareup.retrofit2:retrofit:2.1.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
+
+    implementation 'com.moandjiezana.toml:toml4j:0.7.1'
+
+    implementation ':LeapJava:2.3.1'
+
+    implementation "org.slf4j:slf4j-api:$slf4jVersion"
+    implementation "org.slf4j:jul-to-slf4j:$slf4jVersion"
+    implementation 'org.apache.deltaspike.cdictrl:deltaspike-cdictrl-api:1.5.4'
+    implementation 'org.apache.deltaspike.core:deltaspike-core-api:1.5.4'
+    implementation 'javax.enterprise:cdi-api:2.0.SP1'
+
+    runtimeOnly "org.slf4j:jcl-over-slf4j:$slf4jVersion"
+    runtimeOnly 'org.apache.logging.log4j:log4j-slf4j-impl:2.25.3'
+    runtimeOnly 'org.apache.logging.log4j:log4j-core:2.25.3'
+    runtimeOnly 'org.apache.deltaspike.cdictrl:deltaspike-cdictrl-weld:1.5.4'
+    runtimeOnly 'org.apache.deltaspike.core:deltaspike-core-impl:1.5.4'
+    runtimeOnly 'org.jboss.weld.se:weld-se-core:3.1.9.Final'
+
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation "com.github.tomakehurst:wiremock:2.1.9"
+    testImplementation 'org.spockframework:spock-core:2.3-groovy-4.0'
+    testImplementation 'org.hamcrest:hamcrest-library:1.3'
+    testImplementation 'org.jetbrains.kotlin:kotlin-test'
+    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.10.3'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.10.3'
 }
 
 test {
+    useJUnitPlatform()
     // exclude the technology integration tests
     exclude '**/*IT.class'
 
     jvmArgs '-Djava.library.path=./lib'
 
     reports {
-        junitXml.enabled = false
-        html.enabled = true
+        junitXml.required = true
+        html.required = true
     }
 }
 
@@ -128,7 +102,7 @@ distributions {
 
 task createDcosPadStartScripts(type: CreateStartScripts) {
     outputDir = file('build/scripts')
-    mainClassName = 'de.qaware.cloud.nativ.kpad.KubepadApplication'
+    mainClass = application.mainClass
     applicationName = 'dcospad'
     defaultJvmOpts = ['-Djava.library.path=../lib', '-Dcluster.service=marathon']
     classpath = startScripts.classpath
@@ -138,7 +112,7 @@ startScripts.dependsOn createDcosPadStartScripts
 
 task createOcPadStartScripts(type: CreateStartScripts) {
     outputDir = file('build/scripts')
-    mainClassName = 'de.qaware.cloud.nativ.kpad.KubepadApplication'
+    mainClass = application.mainClass
     applicationName = 'ocpad'
     defaultJvmOpts = ['-Djava.library.path=../lib', '-Dcluster.service=openshift']
     classpath = startScripts.classpath
