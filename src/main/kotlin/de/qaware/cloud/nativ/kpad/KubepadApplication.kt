@@ -39,9 +39,9 @@ import javax.enterprise.context.Dependent
 
 /**
  * The main application class for the Cloud Launchpad.
- * K8S and Marathon (DC/OS) are supported.
+ * Kubernetes and OpenShift are supported.
  *
- * To switch between them set -Dcluster.service to either kubernetes or marathon.
+ * To switch between them set -Dcluster.service to either kubernetes or openshift.
  * For additional configuration have a look at the cluster.properties file
  *
  * -Djava.library.path=.:./lib

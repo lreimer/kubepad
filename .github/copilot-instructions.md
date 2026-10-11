@@ -10,11 +10,11 @@
 
 ## Architecture
 
-Kubepad maps an 8×8 Novation Launchpad MK2 grid to workloads in a Kubernetes, OpenShift, or Marathon cluster. Each row identifies one app/deployment and each square represents one replica.
+Kubepad maps an 8×8 Novation Launchpad MK2 grid to workloads in a Kubernetes or OpenShift cluster. Each row identifies one app/deployment and each square represents one replica.
 
 The application boots a CDI container in `KubepadApplication`. The `cluster.service` system property selects one backend: its CDI producer creates the backend client, and its `Cluster` implementation is enabled while the other providers are excluded. Backends publish `ClusterAppEvent`s when apps are added, scaled, or deleted. `ClusterNodeGrid` maintains the row/replica model, translates controller requests into backend scaling, and emits node lifecycle events. `LaunchpadController` observes button and node events to translate MIDI input into grid actions and grid state into Launchpad LEDs. Keep this event flow intact when changing backend, grid, or controller behavior.
 
-App labels are part of the controller contract: `LAUNCHPAD_ENABLE` opts workloads in, `LAUNCHPAD_ROW` requests a free row from 0–7, and `LAUNCHPAD_COLOR` sets the row color. Backend settings live in `src/main/resources/cluster.properties`; backend selection is a JVM property (`-Dcluster.service=kubernetes`, `marathon`, or `openshift`).
+App labels are part of the controller contract: `LAUNCHPAD_ENABLE` opts workloads in, `LAUNCHPAD_ROW` requests a free row from 0–7, and `LAUNCHPAD_COLOR` sets the row color. Backend settings live in `src/main/resources/cluster.properties`; backend selection is a JVM property (`-Dcluster.service=kubernetes` or `openshift`).
 
 ## Repository conventions
 
