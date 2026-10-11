@@ -7,6 +7,16 @@ Remote control a Kubernetes or Marathon cluster using a Novation launchpad MIDI 
 
 image::kubepad-in-action.jpg[K8S Cloud Launchpad, 400, 400]
 
+== Building
+
+Install JDK 21 and set `JAVA_HOME` to its installation directory.
+The Gradle wrapper uses Gradle 8.14.6, and the build uses Kotlin 2.4.21.
+
+Run `./gradlew clean build` to compile, run the unit tests and license checks, and
+create the application distributions under `build/distributions`.
+Tests named `*IT` require external hardware or a cluster and are excluded from the default build.
+The distributions also require Java 21 to run.
+
 == Configuration
 
 First of all you need a Kubernetes or Marathon cluster. You can access a local installation as
