@@ -56,7 +56,7 @@ open class KubernetesCluster @Inject constructor(private val client: KubernetesC
     @PostConstruct
     open fun init() {
         logger.info("Connect to Kubernetes master {}.", client.masterUrl)
-        val operation = client.extensions().deployments().inNamespace(namespace)
+        val operation = client.apps().deployments().inNamespace(namespace)
         val list = operation.list()
         list?.items?.forEach {
             addDepolyment(it)
@@ -131,7 +131,7 @@ open class KubernetesCluster @Inject constructor(private val client: KubernetesC
                 KubernetesHelper.getName(deployment), replicas)
 
         synchronized(client) {
-            deployments[appIndex] = client.extensions().deployments().inNamespace(namespace).withName(name)
+            deployments[appIndex] = client.apps().deployments().inNamespace(namespace).withName(name)
                     .edit().editSpec()
                     .withReplicas(replicas)
                     .endSpec().done()
@@ -148,7 +148,7 @@ open class KubernetesCluster @Inject constructor(private val client: KubernetesC
                 names[it] = null
             }
 
-            val operation = client.extensions().deployments().inNamespace(namespace)
+            val operation = client.apps().deployments().inNamespace(namespace)
             val list = operation.list()
             list?.items?.forEach {
                 addDepolyment(it)

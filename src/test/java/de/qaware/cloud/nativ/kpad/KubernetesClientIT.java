@@ -89,7 +89,7 @@ public class KubernetesClientIT {
     @Test
     public void testScaleDeployments() {
         // this here works as expected when scaling the deployment
-        Deployment deployment = client.extensions().deployments()
+        Deployment deployment = client.apps().deployments()
                 .inNamespace("default").withName("nginx")
                 .edit()
                 .editSpec().withReplicas(2).endSpec()

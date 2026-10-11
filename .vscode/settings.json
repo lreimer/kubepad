@@ -1,6 +1,8 @@
 {
     "java.configuration.updateBuildConfiguration": "automatic",
     "chat.tools.terminal.autoApprove": {
-        "./gradlew": true
+        "./gradlew": true,
+        "unzip": true,
+        "/usr/libexec/java_home": true
     }
 }
