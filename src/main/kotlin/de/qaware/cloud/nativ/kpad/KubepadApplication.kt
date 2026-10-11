@@ -33,6 +33,7 @@ import org.apache.deltaspike.cdise.api.CdiContainerLoader.getCdiContainer
 import org.apache.deltaspike.core.api.provider.BeanProvider.getContextualReference
 import org.slf4j.bridge.SLF4JBridgeHandler
 import java.util.logging.Logger
+import java.util.Locale
 import javax.enterprise.context.ApplicationScoped
 import javax.enterprise.context.Dependent
 
@@ -74,7 +75,9 @@ fun main(args: Array<String>) {
     launchpad.reset(LaunchpadEvent.reset())
 
     val controller = getContextualReference(LaunchpadController::class.java)
-    controller.write(clusterService.capitalize())
+    controller.write(clusterService.replaceFirstChar {
+        if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+    })
     controller.reset()
 
     val leapmotionEnabled = System.getProperty("leapmotion.enabled")

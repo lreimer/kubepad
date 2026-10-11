@@ -201,6 +201,7 @@ open class OpenShiftCluster @Inject constructor(private val client: OpenShiftCli
             Watcher.Action.ERROR -> {
                 // on error start blinking red with the row selection button
             }
+            null -> Unit
         }
     }
 

@@ -203,6 +203,7 @@ open class KubernetesCluster @Inject constructor(private val client: KubernetesC
             Watcher.Action.ERROR -> {
                 // on error start blinking red with the row selection button
             }
+            null -> Unit
         }
     }
 
